@@ -1,0 +1,26 @@
+Proposed algorithm for character-set independent Encryptor
+=============================
+
+1. Plaintext preparation:
+	Break the plaintext into blocks of a fixed size (this can be specified, but must be a square number). 
+	{Use actual length + zero-padding to enlarge underflowed blocks.} -- THIS IS NOT DESIRABLE, BECAUSE THE OUTPUT WILL BE LARGER THAN THE INPUT.
+	Each block should consist of an array of integers, using the Unicode code point.
+
+2. S-Box generation:
+	Using an initialisation vector and some salt, create an array of substitutions such that there is one for each element in the block. These do not have to be unique values.
+
+3. Key schedule:
+	Expand the key by combining it with a table of magic contants. Contenders include the fractional part of the 13th root of 42 xor the S-Box.
+
+4. Encrypt each block:
+	a)	For each element in the block, xor its value to the value of the S-Box and the key box.
+	b)	For each row in the block (represented as a table measuring its square root x square root), leftrotate element by the row number.
+	c)	For each block, rotate rows by block number modulo rowcount.
+
+5. Rebuild and output:
+	a)	Look up the character that the resulting integer represents. (May not always work)
+	b)	Con
+
+
+Decryption performs the steps in this order:
+1, 2, 3, 4c, 4b, 4a, 5a
